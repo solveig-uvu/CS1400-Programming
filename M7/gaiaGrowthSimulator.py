@@ -4,9 +4,9 @@ def growthCalculations(population:int, rate:int, time:int) -> list:
     resultList = []
     resultList.append(population)
     for hr in range(time + 1): # Using the growth calculation to append to the list. Adds an hour since hour 0 is supposed to be the starting population.
-        growth = population * rate
-        population = growth
+        growth = rate * population * (1 - population)
         resultList.append(growth)
+        population = growth
     return resultList
 
 # Writing helper functions to extract arguments.
@@ -51,8 +51,14 @@ def main():
     numIterations = extractInt(3)
     outputFile = sys.argv[4]
 
-    calculatedGrowth = growthCalculations(populationPercentage, growthRate, numIterations)
-    writeToFile(outputFile, numIterations, calculatedGrowth)
+    if 0 < populationPercentage < 1:
+        if 0 < growthRate < 4:
+            calculatedGrowth = growthCalculations(populationPercentage, growthRate, numIterations)
+            writeToFile(outputFile, numIterations, calculatedGrowth)
+        else: 
+            print("Error: Growth rate must be between 0 and 4.")
+    else:
+        print("Error: Population percentage must be between 0.1 and 1.")
 
 if __name__ == '__main__':
     main()
